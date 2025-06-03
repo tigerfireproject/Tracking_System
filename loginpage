@@ -1,0 +1,287 @@
+import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Bus, Navigation, Route, User, Mail, Lock } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
+const Index = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState<"admin" | "user" | null>(null);
+  const [selectedRole, setSelectedRole] = useState<"admin" | "user">("user");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const { toast } = useToast();
+
+  const handleLogin = (role: "admin" | "user") => {
+    setUserRole(role);
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserRole(null);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    // Simulate authentication delay
+    setTimeout(() => {
+      // Simple validation
+      if (!email || !password) {
+        setError("Please fill in all fields");
+        setIsLoading(false);
+        return;
+      }
+
+      // Demo credentials
+      const validCredentials = {
+        admin: { email: "admin@bustrack.com", password: "admin123" },
+        user: { email: "user@bustrack.com", password: "user123" }
+      };
+
+      const roleCredentials = validCredentials[selectedRole];
+      
+      if (email === roleCredentials.email && password === roleCredentials.password) {
+        toast({
+          title: "Login Successful",
+          description: `Welcome to BusTrack, ${selectedRole}!`,
+        });
+        handleLogin(selectedRole);
+      } else {
+        setError("Invalid credentials. Try admin@bustrack.com / admin123 or user@bustrack.com / user123");
+      }
+      
+      setIsLoading(false);
+    }, 1000);
+  };
+
+  // Role Selector Component
+  const RoleSelector = () => {
+    return (
+      <div className="space-y-3">
+        <label className="text-sm font-semibold text-gray-700">Select Access Level</label>
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => setSelectedRole("admin")}
+            className={`flex flex-col items-center p-5 rounded-xl border-2 transition-all duration-300 transform hover:scale-105 ${
+              selectedRole === "admin"
+                ? "border-blue-500 bg-gradient-to-br from-blue-50 to-indigo-50 text-blue-700 shadow-lg"
+                : "border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:bg-blue-50 shadow-sm"
+            }`}
+          >
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${
+              selectedRole === "admin" 
+                ? "bg-blue-500 text-white" 
+                : "bg-gray-100 text-gray-600"
+            }`}>
+              <Bus className="w-6 h-6" />
+            </div>
+            <span className="text-sm font-bold">Fleet Admin</span>
+            <span className="text-xs text-gray-500 mt-1">Manage Routes & Buses</span>
+          </button>
+          
+          <button
+            type="button"
+            onClick={() => setSelectedRole("user")}
+            className={`flex flex-col items-center p-5 rounded-xl border-2 transition-all duration-300 transform hover:scale-105 ${
+              selectedRole === "user"
+                ? "border-blue-500 bg-gradient-to-br from-blue-50 to-indigo-50 text-blue-700 shadow-lg"
+                : "border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:bg-blue-50 shadow-sm"
+            }`}
+          >
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${
+              selectedRole === "user" 
+                ? "bg-blue-500 text-white" 
+                : "bg-gray-100 text-gray-600"
+            }`}>
+              <User className="w-6 h-6" />
+            </div>
+            <span className="text-sm font-bold">Passenger</span>
+            <span className="text-xs text-gray-500 mt-1">Track Bus Locations</span>
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // Login Form Component
+  const LoginForm = () => {
+    return (
+      <div className="relative">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 opacity-10 pointer-events-none"></div>
+        
+        <Card className="w-full max-w-md shadow-2xl border-0 bg-white/95 backdrop-blur-md relative z-10">
+          <CardHeader className="text-center space-y-4 pb-8">
+            <div className="mx-auto mb-6 w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-xl transform rotate-3">
+              <Bus className="w-12 h-12 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+                BusTrack
+              </CardTitle>
+              <CardDescription className="text-lg text-gray-600 font-medium">
+                Real-time Bus Tracking System
+              </CardDescription>
+              <CardDescription className="text-sm text-gray-500 mt-1">
+                Sign in to track and manage bus routes
+              </CardDescription>
+            </div>
+          </CardHeader>
+          
+          <CardContent className="space-y-6 px-8 pb-8">
+            <RoleSelector />
+            
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-blue-500" />
+                  Email Address
+                </Label>
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="pl-12 h-14 border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 rounded-xl text-base bg-white/80"
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <Lock className="w-4 h-4 text-blue-500" />
+                  Password
+                </Label>
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-12 h-14 border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 rounded-xl text-base bg-white/80"
+                    required
+                  />
+                </div>
+              </div>
+
+              {error && (
+                <Alert className="border-red-200 bg-red-50 rounded-xl">
+                  <AlertDescription className="text-red-700 font-medium">
+                    {error}
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full h-14 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-lg rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center gap-3"
+              >
+                {isLoading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Signing in...
+                  </>
+                ) : (
+                  <>
+                    <Bus className="w-5 h-5" />
+                    Access BusTrack
+                  </>
+                )}
+              </Button>
+            </form>
+
+            <div className="text-center text-sm text-gray-600 bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-100">
+              <p className="mb-2 font-semibold text-gray-700">Demo Credentials:</p>
+              <p className="font-mono">Admin: admin@bustrack.com / admin123</p>
+              <p className="font-mono">User: user@bustrack.com / user123</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
+  if (isLoggedIn && userRole) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
+        <Card className="w-full max-w-lg shadow-2xl border-0 bg-white/90 backdrop-blur-sm">
+          <CardHeader className="text-center pb-6">
+            <div className="mx-auto mb-6 w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-xl">
+              {userRole === "admin" ? (
+                <Bus className="w-10 h-10 text-white" />
+              ) : (
+                <Navigation className="w-10 h-10 text-white" />
+              )}
+            </div>
+            <CardTitle className="text-3xl font-bold text-gray-900 mb-2">
+              Welcome to BusTrack!
+            </CardTitle>
+            <CardDescription className="text-lg">
+              {userRole === "admin" ? (
+                <>
+                  <span className="font-semibold text-blue-600">Fleet Administrator</span>
+                  <br />
+                  <span className="text-gray-600">Manage routes, buses, and monitor fleet operations</span>
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold text-blue-600">Passenger Dashboard</span>
+                  <br />
+                  <span className="text-gray-600">Track bus locations and plan your journey</span>
+                </>
+              )}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center space-y-4">
+            <div className="flex justify-center space-x-4 mb-6">
+              <div className="flex items-center space-x-2 text-gray-600">
+                <Route className="w-5 h-5 text-blue-500" />
+                <span className="text-sm">Real-time Tracking</span>
+              </div>
+              <div className="flex items-center space-x-2 text-gray-600">
+                <Navigation className="w-5 h-5 text-green-500" />
+                <span className="text-sm">Live Navigation</span>
+              </div>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="w-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            >
+              Sign Out
+            </button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute top-10 left-10 w-32 h-32 bg-blue-200 rounded-full opacity-20 animate-pulse"></div>
+      <div className="absolute bottom-10 right-10 w-40 h-40 bg-indigo-200 rounded-full opacity-20 animate-pulse delay-1000"></div>
+      <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-purple-200 rounded-full opacity-15 animate-pulse delay-500"></div>
+      
+      <LoginForm />
+    </div>
+  );
+};
+
+export default Index;
