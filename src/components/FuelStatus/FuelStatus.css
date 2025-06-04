@@ -1,0 +1,16 @@
+/* FuelStatus.css */
+.fuel-status {
+    padding: 20px;
+}
+
+.status-active {
+    color: #52c41a;
+}
+
+.status-inactive {
+    color: #f5222d;
+}
+
+.status-maintenance {
+    color: #faad14;
+}

@@ -1,0 +1,29 @@
+/* src/components/Reports/Reports.css */
+.reports-container {
+  padding: 20px;
+}
+
+.report-controls {
+  margin-bottom: 20px;
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+}
+
+.report-chart {
+  margin-bottom: 20px;
+}
+
+.report-table {
+  margin-top: 20px;
+}
+
+.reports-container {
+    padding: 20px;
+}
+
+.report-controls {
+    margin-bottom: 20px;
+}

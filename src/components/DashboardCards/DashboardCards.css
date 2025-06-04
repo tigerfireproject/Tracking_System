@@ -1,0 +1,41 @@
+/* src/components/DashboardCards/DashboardCards.css */
+.dashboard-cards {
+  margin-bottom: 24px;
+}
+
+.ant-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* src/components/FuelStatus/FuelStatus.css */
+.fuel-status {
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.status-active {
+  color: #52c41a;
+  font-weight: bold;
+}
+
+.status-inactive {
+  color: #f5222d;
+}
+
+.status-maintenance {
+  color: #faad14;
+}
+
+.ant-progress-line {
+  margin-bottom: 0;
+}
+
+.dashboard-cards {
+    margin-bottom: 20px;
+}
+
+.ant-card {
+    margin-bottom: 16px;
+}

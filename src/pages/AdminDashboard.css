@@ -1,0 +1,41 @@
+/* src/pages/AdminDashboard.css */
+.admin-dashboard {
+  min-height: 100vh;
+}
+
+.header {
+  background: #001529;
+  color: white;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.site-layout-background {
+  background: #fff;
+}
+
+.bus-map-container {
+  margin-top: 24px;
+  height: 500px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.bus-map {
+  height: 100%;
+  width: 100%;
+}

@@ -1,0 +1,38 @@
+/* src/components/NotificationCenter/NotificationCenter.css */
+.notification-center {
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.unread-notification {
+  background-color: #f6ffed;
+  cursor: pointer;
+}
+
+.bus-id {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.notification-time {
+  color: #888;
+  font-size: 0.8em;
+}
+
+.notification-center {
+    padding: 20px;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
